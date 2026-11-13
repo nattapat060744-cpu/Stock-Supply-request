@@ -14,9 +14,9 @@ const steps = [
 export default function Home() {
   return (
     <main className={`${thaiFont.className} min-h-screen bg-slate-50 text-slate-800`}>
-      <div className="mx-auto grid min-h-screen max-w-6xl lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="grid min-h-screen lg:grid-cols-[1.05fr_0.95fr]">
         {/* ฝั่งซ้าย: ขั้นตอนการทำงาน */}
-        <section className="relative isolate flex flex-col justify-center overflow-hidden bg-linear-to-br from-indigo-600 via-indigo-600 to-sky-600 px-6 py-14 text-white sm:px-12 lg:rounded-r-[2.5rem] lg:py-20">
+        <section className="relative isolate flex flex-col justify-center overflow-hidden bg-linear-to-br from-indigo-600 via-indigo-600 to-sky-600 px-6 py-14 text-white sm:px-12 lg:py-20">
           <div aria-hidden="true" className="pointer-events-none absolute -right-28 -top-28 -z-10 h-80 w-80 rounded-full bg-white/10 blur-3xl" />
           <div aria-hidden="true" className="pointer-events-none absolute -bottom-32 -left-10 -z-10 h-80 w-80 rounded-full bg-sky-300/20 blur-3xl" />
 
