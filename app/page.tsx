@@ -1,6 +1,10 @@
 import Link from 'next/link';
+import { Noto_Sans_Thai } from 'next/font/google';
 
-// หน้าแรก: แบ่ง 2 ฝั่ง — ซ้ายอธิบายขั้นตอนการทำงาน ขวาเลือกทางเข้า
+// ฟอนต์ภาษาไทยเฉพาะหน้าแรก (ไม่กระทบหน้าอื่น)
+const thaiFont = Noto_Sans_Thai({ subsets: ['thai', 'latin'], weight: ['400', '500', '600', '700', '800'] });
+
+// หน้าแรก: ซ้ายอธิบายขั้นตอนการทำงาน ขวาเลือกทางเข้า (เนื้อหาและลิงก์เดิม ปรับเฉพาะหน้าตา)
 const steps = [
   { icon: '📸', title: 'สาขาแจ้งของใกล้หมด', text: 'ถ่ายรูปและระบุจำนวนที่ต้องการสั่ง' },
   { icon: '🧾', title: 'สำนักงานใหญ่ตัดบิล', text: 'ตรวจรายการ จัดเป็นบิล และแพ็คของ' },
@@ -9,30 +13,39 @@ const steps = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-800">
-      <div className="mx-auto grid min-h-screen max-w-6xl lg:grid-cols-[1.1fr_0.9fr]">
+    <main className={`${thaiFont.className} min-h-screen bg-slate-50 text-slate-800`}>
+      <div className="mx-auto grid min-h-screen max-w-6xl lg:grid-cols-[1.05fr_0.95fr]">
         {/* ฝั่งซ้าย: ขั้นตอนการทำงาน */}
-        <section className="relative flex flex-col justify-center overflow-hidden bg-linear-to-br from-indigo-600 via-indigo-600 to-sky-600 px-6 py-14 text-white sm:px-12 lg:py-20">
-          <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-white/10 blur-2xl" />
-          <div className="pointer-events-none absolute -bottom-24 left-10 h-72 w-72 rounded-full bg-sky-300/20 blur-2xl" />
+        <section className="relative isolate flex flex-col justify-center overflow-hidden bg-linear-to-br from-indigo-600 via-indigo-600 to-sky-600 px-6 py-14 text-white sm:px-12 lg:rounded-r-[2.5rem] lg:py-20">
+          <div aria-hidden="true" className="pointer-events-none absolute -right-28 -top-28 -z-10 h-80 w-80 rounded-full bg-white/10 blur-3xl" />
+          <div aria-hidden="true" className="pointer-events-none absolute -bottom-32 -left-10 -z-10 h-80 w-80 rounded-full bg-sky-300/20 blur-3xl" />
 
-          <span className="relative inline-flex w-fit items-center gap-2 rounded-full bg-white/15 px-3.5 py-1 text-xs font-bold ring-1 ring-white/25">
+          <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 text-xs font-bold ring-1 ring-white/25 backdrop-blur">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
             เว็บตัวอย่าง
           </span>
-          <h1 className="relative mt-6 text-3xl font-black leading-tight tracking-tight sm:text-4xl">ระบบแจ้งสินค้า<br />ใกล้หมด</h1>
-          <p className="relative mt-4 max-w-md text-sm font-semibold leading-relaxed text-indigo-100">
+
+          <h1 className="mt-6 text-4xl font-black leading-[1.15] tracking-tight sm:text-5xl">
+            ระบบแจ้งสินค้า
+            <span className="block text-indigo-100">ใกล้หมด</span>
+          </h1>
+          <p className="mt-5 max-w-md text-base font-medium leading-relaxed text-indigo-100">
             จากสาขาถึงสำนักงานใหญ่ ทุกบิลติดตามได้ตั้งแต่แจ้งจนรับของ
           </p>
 
-          <ol className="relative mt-10 space-y-5">
+          <ol className="mt-12 space-y-4">
             {steps.map((step, index) => (
-              <li key={step.title} className="flex items-start gap-4">
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-2xl ring-1 ring-white/20">{step.icon}</span>
-                <span>
-                  <span className="block text-xs font-bold text-indigo-200">ขั้นที่ {index + 1}</span>
-                  <span className="block text-base font-black">{step.title}</span>
-                  <span className="block text-sm font-semibold text-indigo-100">{step.text}</span>
+              <li
+                key={step.title}
+                className="flex items-center gap-4 rounded-2xl bg-white/10 p-4 ring-1 ring-white/15 backdrop-blur-sm"
+              >
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white text-2xl shadow-lg shadow-indigo-900/20">
+                  {step.icon}
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-xs font-bold uppercase tracking-wider text-indigo-200">ขั้นที่ {index + 1}</span>
+                  <span className="mt-0.5 block text-base font-extrabold">{step.title}</span>
+                  <span className="mt-0.5 block text-sm font-medium text-indigo-100">{step.text}</span>
                 </span>
               </li>
             ))}
@@ -40,37 +53,41 @@ export default function Home() {
         </section>
 
         {/* ฝั่งขวา: เลือกทางเข้า */}
-        <section className="flex flex-col justify-center bg-white px-6 py-14 sm:px-12 lg:py-20">
-          <h2 className="text-xl font-black">เลือกการใช้งาน</h2>
-          <p className="mt-1.5 text-sm font-semibold text-slate-500">เลือกกลุ่มผู้ใช้ของคุณเพื่อเริ่มต้น</p>
+        <section className="flex flex-col justify-center px-6 py-14 sm:px-12 lg:py-20">
+          <p className="text-xs font-bold uppercase tracking-wider text-indigo-600">ทางเข้าระบบ</p>
+          <h2 className="mt-2 text-2xl font-black text-slate-900 sm:text-3xl">เลือกการใช้งาน</h2>
+          <p className="mt-2 text-sm font-medium text-slate-500">เลือกกลุ่มผู้ใช้ของคุณเพื่อเริ่มต้น</p>
 
           <div className="mt-8 space-y-4">
             <Link
               href="/stock-request"
-              className="group flex items-center gap-4 rounded-2xl border-2 border-indigo-500 bg-indigo-500 p-5 text-white shadow-lg shadow-indigo-200 transition-all hover:bg-indigo-600 active:scale-[0.99]"
+              className="group flex items-center gap-4 rounded-2xl bg-indigo-600 p-5 text-white shadow-xl shadow-indigo-600/25 ring-1 ring-indigo-600 transition-all duration-200 hover:-translate-y-0.5 hover:bg-indigo-700 hover:shadow-2xl hover:shadow-indigo-600/30 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-300 active:translate-y-0"
             >
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/20 text-2xl">🏪</span>
-              <span className="flex-1">
-                <span className="block text-base font-black">พนักงานสาขา</span>
-                <span className="block text-xs font-semibold text-indigo-100">เลือกสาขาแล้วใช้งานได้ทันที</span>
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/20 text-2xl ring-1 ring-white/25">🏪</span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-lg font-extrabold">พนักงานสาขา</span>
+                <span className="mt-0.5 block text-sm font-medium text-indigo-100">เลือกสาขาแล้วใช้งานได้ทันที</span>
               </span>
-              <span className="text-xl font-black transition-transform group-hover:translate-x-1">→</span>
+              <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/15 text-lg font-black transition-transform duration-200 group-hover:translate-x-1">→</span>
             </Link>
 
             <Link
               href="/admin"
-              className="group flex items-center gap-4 rounded-2xl border-2 border-slate-200 bg-white p-5 text-slate-800 transition-all hover:border-indigo-400 hover:shadow-md active:scale-[0.99]"
+              className="group flex items-center gap-4 rounded-2xl bg-white p-5 text-slate-800 shadow-sm ring-1 ring-slate-200 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:ring-indigo-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-200 active:translate-y-0"
             >
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-2xl">🏢</span>
-              <span className="flex-1">
-                <span className="block text-base font-black">สำนักงานใหญ่</span>
-                <span className="block text-xs font-semibold text-slate-500">ต้องเข้าสู่ระบบด้วยอีเมลและรหัสผ่าน</span>
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-50 text-2xl ring-1 ring-indigo-100">🏢</span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-lg font-extrabold text-slate-900">สำนักงานใหญ่</span>
+                <span className="mt-0.5 block text-sm font-medium text-slate-500">ต้องเข้าสู่ระบบด้วยอีเมลและรหัสผ่าน</span>
               </span>
-              <span className="text-xl font-black text-slate-300 transition-all group-hover:translate-x-1 group-hover:text-indigo-500">→</span>
+              <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-100 text-lg font-black text-slate-400 transition-all duration-200 group-hover:translate-x-1 group-hover:bg-indigo-600 group-hover:text-white">→</span>
             </Link>
           </div>
 
-          <p className="mt-10 text-xs font-semibold text-slate-400">ระบบนี้ใช้สำหรับการสาธิตเท่านั้น</p>
+          <p className="mt-10 flex items-center gap-2 text-xs font-medium text-slate-400">
+            <span aria-hidden="true" className="h-px w-6 bg-slate-300" />
+            ระบบนี้ใช้สำหรับการสาธิตเท่านั้น
+          </p>
         </section>
       </div>
     </main>
